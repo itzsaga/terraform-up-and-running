@@ -21,8 +21,7 @@ resource "aws_launch_configuration" "example" {
   image_id        = "ami-07ebfd5b3428b6f4d"
   instance_type   = var.instance_type
   security_groups = [aws_security_group.instance.id]
-
-  user_data = data.template_file.user_data.rendered
+  user_data       = data.template_file.user_data.rendered
 
   lifecycle {
     create_before_destroy = true
@@ -33,10 +32,10 @@ resource "aws_security_group" "instance" {
   name = "${var.cluster_name}-instance"
 
   ingress {
-    from_port     = var.server_port
-    to_port       = var.server_port
-    protocol      = local.tcp_protocol
-    cidr_blocks   = local.all_ips
+    from_port   = var.server_port
+    to_port     = var.server_port
+    protocol    = local.tcp_protocol
+    cidr_blocks = local.all_ips
   }
 }
 
@@ -99,10 +98,10 @@ resource "aws_lb_listener" "http" {
 }
 
 resource "aws_lb_target_group" "asg" {
-  name = "${var.cluster_name}-asg"
-  port = var.server_port
+  name     = "${var.cluster_name}-asg"
+  port     = var.server_port
   protocol = "HTTP"
-  vpc_id = data.aws_vpc.default.id
+  vpc_id   = data.aws_vpc.default.id
 
   health_check {
     path                = "/"
